@@ -32,6 +32,7 @@ public class HomeMediaControllerFragment extends Fragment {
     private MediaController selectedController;
     private TextView titleView;
     private TextView artistView;
+    private VisualizerView visualizer;
     private ImageButton playPause;
     private android.view.View next, prev;
     private MediaController.Callback controllerCallback;
@@ -87,6 +88,7 @@ public class HomeMediaControllerFragment extends Fragment {
         titleView = v.findViewById(R.id.media_title);
         artistView = v.findViewById(R.id.media_artist);
         playPause = v.findViewById(R.id.btn_play_pause);
+        visualizer = v.findViewById(R.id.visualizer);
         next = v.findViewById(R.id.btn_next);
         prev = v.findViewById(R.id.btn_prev);
 
@@ -299,10 +301,16 @@ public class HomeMediaControllerFragment extends Fragment {
         if (playPause == null) return;
         int state = selectedController != null && selectedController.getPlaybackState() != null
                 ? selectedController.getPlaybackState().getState() : 0;
-        if (state == android.media.session.PlaybackState.STATE_PLAYING) {
+        boolean playing = state == android.media.session.PlaybackState.STATE_PLAYING;
+        if (playing) {
             playPause.setImageResource(R.drawable.ic_pause);
         } else {
             playPause.setImageResource(R.drawable.ic_play_arrow);
+        }
+        if (visualizer != null) {
+            boolean hasMedia = selectedController != null && selectedController.getMetadata() != null;
+            visualizer.setVisibility(hasMedia ? View.VISIBLE : View.GONE);
+            visualizer.setPlaying(playing && hasMedia);
         }
     }
 
