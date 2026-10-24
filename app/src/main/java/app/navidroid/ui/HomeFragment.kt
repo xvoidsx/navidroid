@@ -1,6 +1,12 @@
 package app.navidroid.ui
 
 import android.app.admin.DevicePolicyManager
+import java.util.Calendar
+import androidx.core.content.ContextCompat
+import android.text.format.DateFormat
+import android.provider.CalendarContract
+import android.content.pm.PackageManager
+import android.Manifest
 import android.content.Context
 import android.content.Intent
 import android.content.res.Configuration
@@ -89,6 +95,7 @@ class HomeFragment : Fragment(), View.OnClickListener, View.OnLongClickListener 
     override fun onResume() {
         super.onResume()
         populateHomeScreen(false)
+        populateCalendarLine()
         viewModel.isNavidroidDefault()
         if (prefs.showStatusBar) showStatusBar()
         else hideStatusBar()
@@ -99,6 +106,7 @@ class HomeFragment : Fragment(), View.OnClickListener, View.OnLongClickListener 
             R.id.lock -> {}
             R.id.clock -> openClockApp()
             R.id.date -> openCalendarApp()
+            R.id.tvCalendarLine -> openCalendarApp()
             R.id.setDefaultLauncher -> viewModel.resetLauncherLiveData.call()
             R.id.tvScreenTime -> openScreenTimeDigitalWellbeing()
 
@@ -219,6 +227,7 @@ class HomeFragment : Fragment(), View.OnClickListener, View.OnLongClickListener 
         binding.setDefaultLauncher.setOnClickListener(this)
         binding.setDefaultLauncher.setOnLongClickListener(this)
         binding.tvScreenTime.setOnClickListener(this)
+        binding.tvCalendarLine.setOnClickListener(this)
     }
 
     private fun setHomeAlignment(horizontalGravity: Int = prefs.homeAlignment) {
@@ -275,6 +284,51 @@ class HomeFragment : Fragment(), View.OnClickListener, View.OnLongClickListener 
         }
         binding.tvScreenTime.layoutParams = params
         binding.tvScreenTime.setPadding(10.dpToPx())
+    }
+
+
+    private fun populateCalendarLine() {
+        val line = binding.tvCalendarLine
+        if (!prefs.calendarLine || ContextCompat.checkSelfPermission(
+                requireContext(), Manifest.permission.READ_CALENDAR
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            line.visibility = View.GONE
+            return
+        }
+        try {
+            val now = System.currentTimeMillis()
+            val dayStart = Calendar.getInstance().apply {
+                timeInMillis = now
+                set(Calendar.HOUR_OF_DAY, 0)
+                set(Calendar.MINUTE, 0)
+                set(Calendar.SECOND, 0)
+                set(Calendar.MILLISECOND, 0)
+            }.timeInMillis
+            val dayEnd = dayStart + 24 * 60 * 60 * 1000
+            val uri = CalendarContract.Instances.CONTENT_URI.buildUpon()
+                .appendPath(dayStart.toString()).appendPath(dayEnd.toString()).build()
+            val cursor = requireContext().contentResolver.query(
+                uri,
+                arrayOf(CalendarContract.Instances.TITLE, CalendarContract.Instances.BEGIN),
+                null, null, "${CalendarContract.Instances.BEGIN} ASC"
+            )
+            cursor?.use {
+                val isMorning = Calendar.getInstance().get(Calendar.HOUR_OF_DAY) < 12
+                while (it.moveToNext()) {
+                    val title = it.getString(0) ?: continue
+                    val begin = it.getLong(1)
+                    if (!isMorning && begin < now) continue
+                    val time = DateFormat.getTimeFormat(requireContext()).format(Date(begin))
+                    line.text = "$time · $title"
+                    line.visibility = View.VISIBLE
+                    return
+                }
+                line.visibility = View.GONE
+            } ?: run { line.visibility = View.GONE }
+        } catch (e: Exception) {
+            line.visibility = View.GONE
+        }
     }
 
     private fun populateHomeScreen(appCountUpdated: Boolean) {

@@ -2,7 +2,13 @@
 <resources>
     <color name="colorPrimary">@android:color/white</color>
     <color name="colorPrimaryDark">@android:color/darker_gray</color>
-    <color name="colorAccent">#FFEB3B</color>
+    <color name="colorAccent">#FF10F0</color>
+
+    <!--nightshadeNeon-->
+    <color name="neonPink">#FF10F0</color>
+    <color name="neonGreen">#39FF14</color>
+    <color name="neonCyan">#00FFFF</color>
+    <color name="neonBase">#07040F</color>
 
     <!--White-->
     <color name="white">#FFFFFF</color>

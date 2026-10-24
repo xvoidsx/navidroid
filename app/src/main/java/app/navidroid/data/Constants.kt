@@ -65,6 +65,8 @@ object Constants {
         const val UBUNTU = 2
         const val EBGARAMOND = 3
         const val CRIMSONPRO = 4
+        const val NOTOSANS = 5
+        const val JETBRAINSMONO = 6
     }
 
     object CharacterIndicator {

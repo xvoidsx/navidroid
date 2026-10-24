@@ -4,7 +4,6 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
-import android.content.pm.ActivityInfo
 import android.content.res.Configuration
 import android.os.Build
 import android.os.Bundle
@@ -30,7 +29,6 @@ import app.navidroid.helper.isDaySince
 import app.navidroid.helper.isDefaultLauncher
 import app.navidroid.helper.isEinkDisplay
 import app.navidroid.helper.isNavidroidDefault
-import app.navidroid.helper.isTablet
 import app.navidroid.helper.openUrl
 import app.navidroid.helper.rateApp
 import app.navidroid.helper.resetLauncherViaFakeActivity
@@ -71,6 +69,8 @@ class MainActivity : AppCompatActivity() {
             Constants.Font.UBUNTU -> setTheme(R.style.AppTheme_FontUbuntu)
             Constants.Font.EBGARAMOND -> setTheme(R.style.AppTheme_FontEBGaramond)
             Constants.Font.CRIMSONPRO -> setTheme(R.style.AppTheme_FontCrimsonPro)
+            Constants.Font.NOTOSANS -> setTheme(R.style.AppTheme_FontNotoSans)
+            Constants.Font.JETBRAINSMONO -> setTheme(R.style.AppTheme_FontJetBrainsMono)
             else -> setTheme(R.style.AppTheme_FontDefault)
         }
         if (isEinkDisplay()) prefs.appTheme = AppCompatDelegate.MODE_NIGHT_NO
@@ -109,7 +109,6 @@ class MainActivity : AppCompatActivity() {
         initClickListeners()
         initObservers(viewModel)
         viewModel.getAppList()
-        setupOrientation()
 
         window.addFlags(FLAG_LAYOUT_NO_LIMITS)
     }
@@ -283,13 +282,6 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    @SuppressLint("SourceLockedOrientationActivity")
-    private fun setupOrientation() {
-        if (isTablet(this) || Build.VERSION.SDK_INT == Build.VERSION_CODES.O)
-            return
-        
-        requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
-    }
 
     private fun backToHomeScreen() {
         binding.messageLayout.visibility = View.GONE

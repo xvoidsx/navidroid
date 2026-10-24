@@ -1,6 +1,10 @@
 package app.navidroid.ui
 
 import android.app.admin.DevicePolicyManager
+import androidx.core.content.ContextCompat
+import androidx.activity.result.contract.ActivityResultContracts
+import android.content.pm.PackageManager
+import android.Manifest
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
@@ -55,6 +59,13 @@ class SettingsFragment : Fragment(), View.OnClickListener, View.OnLongClickListe
     private var _binding: FragmentSettingsBinding? = null
     private val binding get() = _binding!!
 
+    private val calendarPermission = registerForActivityResult(ActivityResultContracts.RequestPermission()) { granted ->
+        if (granted) {
+            prefs.calendarLine = true
+            populateCalendarOnOff()
+        }
+    }
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = FragmentSettingsBinding.inflate(inflater, container, false)
         return binding.root
@@ -76,6 +87,7 @@ class SettingsFragment : Fragment(), View.OnClickListener, View.OnLongClickListe
         populateProMessage()
         populateKeyboardText()
         populateScreenTimeOnOff()
+        populateCalendarOnOff()
         populateLockSettings()
         populateAppThemeText()
         populateFontText()
@@ -125,6 +137,7 @@ class SettingsFragment : Fragment(), View.OnClickListener, View.OnLongClickListe
         when (view.id) {
             R.id.navidroidHiddenApps -> showHiddenApps()
             R.id.screenTimeOnOff -> viewModel.showDialog.postValue(Constants.Dialog.DIGITAL_WELLBEING)
+            R.id.calendarOnOff -> toggleCalendarLine()
             R.id.appInfo -> openAppInfo(requireContext(), Process.myUserHandle(), BuildConfig.APPLICATION_ID)
             R.id.setLauncher -> viewModel.resetLauncherLiveData.call()
             R.id.toggleLock -> toggleLockMode()
@@ -151,6 +164,8 @@ class SettingsFragment : Fragment(), View.OnClickListener, View.OnLongClickListe
             R.id.fontUbuntu -> updateFont(Constants.Font.UBUNTU)
             R.id.fontEBGaramond -> updateFont(Constants.Font.EBGARAMOND)
             R.id.fontCrimsonPro -> updateFont(Constants.Font.CRIMSONPRO)
+            R.id.fontNotoSans -> updateFont(Constants.Font.NOTOSANS)
+            R.id.fontJetBrainsMono -> updateFont(Constants.Font.JETBRAINSMONO)
             R.id.textSizeValue -> binding.textSizesLayout.visibility = View.VISIBLE
             R.id.actionAccessibility -> openAccessibilityService()
             R.id.closeAccessibility -> toggleAccessibilityVisibility(false)
@@ -214,6 +229,7 @@ class SettingsFragment : Fragment(), View.OnClickListener, View.OnLongClickListe
         binding.toggleLock.setOnClickListener(this)
         binding.homeAppsNum.setOnClickListener(this)
         binding.screenTimeOnOff.setOnClickListener(this)
+        binding.calendarOnOff.setOnClickListener(this)
         binding.alignment.setOnClickListener(this)
         binding.alignmentLeft.setOnClickListener(this)
         binding.alignmentCenter.setOnClickListener(this)
@@ -254,6 +270,8 @@ class SettingsFragment : Fragment(), View.OnClickListener, View.OnLongClickListe
         binding.fontUbuntu?.setOnClickListener(this)
         binding.fontEBGaramond?.setOnClickListener(this)
         binding.fontCrimsonPro?.setOnClickListener(this)
+        binding.fontNotoSans?.setOnClickListener(this)
+        binding.fontJetBrainsMono?.setOnClickListener(this)
 
         binding.maxApps0.setOnClickListener(this)
         binding.maxApps1.setOnClickListener(this)
@@ -557,6 +575,8 @@ class SettingsFragment : Fragment(), View.OnClickListener, View.OnLongClickListe
             Constants.Font.UBUNTU -> getString(R.string.ubuntu)
             Constants.Font.EBGARAMOND -> getString(R.string.eb_garamond)
             Constants.Font.CRIMSONPRO -> getString(R.string.crimson_pro)
+            Constants.Font.NOTOSANS -> getString(R.string.noto_sans)
+            Constants.Font.JETBRAINSMONO -> getString(R.string.jetbrains_mono)
             else -> getString(R.string.default_font)
         }
     }
@@ -593,6 +613,31 @@ class SettingsFragment : Fragment(), View.OnClickListener, View.OnLongClickListe
             if (requireContext().appUsagePermissionGranted()) binding.screenTimeOnOff.text = getString(R.string.on)
             else binding.screenTimeOnOff.text = getString(R.string.off)
         } else binding.screenTimeLayout.visibility = View.GONE
+    }
+
+
+    private fun populateCalendarOnOff() {
+        binding.calendarOnOff.text = if (prefs.calendarLine && ContextCompat.checkSelfPermission(
+                requireContext(), Manifest.permission.READ_CALENDAR
+            ) == PackageManager.PERMISSION_GRANTED
+        ) getString(R.string.on) else getString(R.string.off)
+    }
+
+    private fun toggleCalendarLine() {
+        if (prefs.calendarLine) {
+            prefs.calendarLine = false
+            populateCalendarOnOff()
+            return
+        }
+        if (ContextCompat.checkSelfPermission(
+                requireContext(), Manifest.permission.READ_CALENDAR
+            ) == PackageManager.PERMISSION_GRANTED
+        ) {
+            prefs.calendarLine = true
+            populateCalendarOnOff()
+        } else {
+            calendarPermission.launch(Manifest.permission.READ_CALENDAR)
+        }
     }
 
     private fun populateKeyboardText() {

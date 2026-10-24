@@ -59,7 +59,7 @@
             android:background="?attr/selectableItemBackgroundBorderless"
             android:src="@drawable/ic_play_arrow"
             android:contentDescription="Play/Pause"
-            android:tint="?attr/primaryColor" />
+            android:tint="@color/neonPink" />
 
         <ImageButton
             android:id="@+id/btn_next"

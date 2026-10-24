@@ -117,6 +117,14 @@
         <item name="appFont">@font/crimsonpro</item>
     </style>
 
+    <style name="AppTheme.FontNotoSans" parent="AppTheme">
+        <item name="appFont">@font/notosans</item>
+    </style>
+
+    <style name="AppTheme.FontJetBrainsMono" parent="AppTheme">
+        <item name="appFont">@font/jetbrainsmono</item>
+    </style>
+
     <style name="TextMedium" parent="TextDefault">
         <item name="android:textSize">20sp</item>
     </style>

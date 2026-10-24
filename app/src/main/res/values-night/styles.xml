@@ -26,7 +26,7 @@
                 
         <item name="colorPrimary">@color/white</item>
         <item name="colorPrimaryDark">@android:color/darker_gray</item>
-        <item name="colorAccent">@color/white</item>
+        <item name="colorAccent">@color/neonPink</item>
 
         <item name="primaryColor">@color/white</item>
         <item name="primaryInverseColor">@color/whiteInverse</item>
