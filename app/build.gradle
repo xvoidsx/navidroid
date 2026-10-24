@@ -24,6 +24,18 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
+    // Shared debug key so CI debug builds all share one signature and can
+    // update over each other. This is a debug-only key with the public
+    // Android default credentials, never a release key.
+    signingConfigs {
+        debug {
+            storeFile file("debug.keystore")
+            storePassword "android"
+            keyAlias "androiddebugkey"
+            keyPassword "android"
+        }
+    }
+
     buildTypes {
         release {
             debuggable false
@@ -34,6 +46,7 @@ android {
             debuggable true
             minifyEnabled false
             applicationIdSuffix ".debug"
+            signingConfig signingConfigs.debug
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
