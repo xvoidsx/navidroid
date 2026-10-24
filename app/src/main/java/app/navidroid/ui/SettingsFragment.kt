@@ -63,6 +63,10 @@ class SettingsFragment : Fragment(), View.OnClickListener, View.OnLongClickListe
         if (granted) {
             prefs.calendarLine = true
             populateCalendarOnOff()
+        } else {
+            // A denied request never shows a dialog again, so say plainly
+            // where to grant it instead of leaving the row silently dead.
+            requireContext().showToast(getString(R.string.calendar_permission_needed))
         }
     }
 
@@ -84,7 +88,6 @@ class SettingsFragment : Fragment(), View.OnClickListener, View.OnLongClickListe
         checkAdminPermission()
 
         binding.homeAppsNum.text = prefs.homeAppsNum.toString()
-        populateProMessage()
         populateKeyboardText()
         populateScreenTimeOnOff()
         populateCalendarOnOff()
@@ -180,6 +183,9 @@ class SettingsFragment : Fragment(), View.OnClickListener, View.OnLongClickListe
             R.id.maxApps3 -> updateHomeAppsNum(3)
             R.id.maxApps4 -> updateHomeAppsNum(4)
             R.id.maxApps5 -> updateHomeAppsNum(5)
+            R.id.maxApps6 -> updateHomeAppsNum(6)
+            R.id.maxApps7 -> updateHomeAppsNum(7)
+            R.id.maxApps8 -> updateHomeAppsNum(8)
 
             R.id.textSize1 -> updateTextSizeScale(Constants.TextSize.ONE)
             R.id.textSize2 -> updateTextSizeScale(Constants.TextSize.TWO)
@@ -281,6 +287,9 @@ class SettingsFragment : Fragment(), View.OnClickListener, View.OnLongClickListe
         binding.maxApps3.setOnClickListener(this)
         binding.maxApps4.setOnClickListener(this)
         binding.maxApps5.setOnClickListener(this)
+        binding.maxApps6.setOnClickListener(this)
+        binding.maxApps7.setOnClickListener(this)
+        binding.maxApps8.setOnClickListener(this)
 
         binding.textSize1.setOnClickListener(this)
         binding.textSize2.setOnClickListener(this)
@@ -726,13 +735,6 @@ class SettingsFragment : Fragment(), View.OnClickListener, View.OnLongClickListe
             R.id.action_settingsFragment_to_appListFragment,
             bundleOf(Constants.Key.FLAG to flag)
         )
-    }
-
-    private fun populateProMessage() {
-        if (prefs.proMessageShown.not() && prefs.userState == Constants.UserState.SHARE) {
-            prefs.proMessageShown = true
-            viewModel.showDialog.postValue(Constants.Dialog.PRO_MESSAGE)
-        }
     }
 
     override fun onDestroyView() {

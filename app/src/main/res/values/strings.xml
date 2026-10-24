@@ -4,7 +4,6 @@
     <string name="lock_layout_description" translatable="false">lock layout description to be used a unique id to lock screen</string>
     <string name="navidroid_pro" translatable="false">navidroid Pro</string>
     <string name="digital_minimalism" translatable="false"><u>Digital Minimalism</u></string>
-    <string name="new_app_note_to_self" translatable="false"><u>New app: Note to Self</u></string>
     <string name="day_battery" formatted="false" translatable="false">%s, %d%%</string>
     <string name="tag_0" translatable="false">0</string>
     <string name="tag_1" translatable="false">1</string>
@@ -170,6 +169,7 @@
     <string name="noto_sans">Noto Sans</string>
     <string name="jetbrains_mono">JetBrains Mono</string>
     <string name="calendar">Calendar</string>
+    <string name="calendar_permission_needed">Calendar permission needed — allow it in Settings → Apps → navidroid → Permissions</string>
     <string name="choose_font">Choose font (TTF)</string>
     <string name="font_applied">Font applied</string>
     <string name="font_preview_text">The quick brown fox jumps over the lazy dog</string>

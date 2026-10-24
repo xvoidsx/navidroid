@@ -36,8 +36,9 @@
 
     <app.navidroid.ui.VisualizerView
         android:id="@+id/visualizer"
-        android:layout_width="match_parent"
+        android:layout_width="360dp"
         android:layout_height="24dp"
+        android:layout_gravity="end"
         android:layout_marginTop="6dp"
         android:visibility="gone" />
 
