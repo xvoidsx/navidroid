@@ -223,6 +223,105 @@
 
                 </FrameLayout>
 
+                <!-- Media controls toggle -->
+                <FrameLayout
+                    android:id="@+id/mediaToggleRow"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:animateLayoutChanges="true"
+                    android:clickable="true"
+                    android:foreground="?attr/selectableItemBackground">
+
+                    <TextView
+                        style="@style/TextSmall"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:paddingVertical="8dp"
+                        android:text="Media controls on home"
+                        android:textColor="?attr/primaryColor" />
+
+                    <TextView
+                        android:id="@+id/mediaWidgetEnabledText"
+                        style="@style/TextSmallBold"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="end|bottom"
+                        android:layout_marginEnd="8dp"
+                        android:padding="8dp"
+                        android:text="On" />
+
+                </FrameLayout>
+
+                <!-- Choose media app row -->
+                <FrameLayout
+                    android:id="@+id/chooseMediaRow"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:clickable="true"
+                    android:foreground="?attr/selectableItemBackground">
+
+                    <TextView
+                        style="@style/TextSmall"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:paddingVertical="8dp"
+                        android:text="Choose media app"
+                        android:textColor="?attr/primaryColor" />
+
+                    <TextView
+                        android:id="@+id/mediaAppName"
+                        style="@style/TextSmallBold"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="end|bottom"
+                        android:layout_marginEnd="4dp"
+                        android:padding="8dp"
+                        android:text="None" />
+
+                    <ImageView
+                        android:id="@+id/chooseMediaIcon"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_gravity="end|center_vertical"
+                        android:layout_marginEnd="8dp"
+                        android:src="@drawable/ic_chevron_right"
+                        android:tint="?attr/primaryColor" />
+
+                </FrameLayout>
+
+                <FrameLayout
+                    android:id="@+id/enableListenerRow"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:clickable="true"
+                    android:foreground="?attr/selectableItemBackground">
+
+                    <TextView
+                        style="@style/TextSmall"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:paddingVertical="8dp"
+                        android:text="Notification listener"
+                        android:textColor="?attr/primaryColor" />
+
+                    <TextView
+                        android:id="@+id/enableMediaListenerText"
+                        style="@style/TextSmallBold"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="end|bottom"
+                        android:layout_marginEnd="8dp"
+                        android:padding="8dp"
+                        android:text="Open" />
+
+                </FrameLayout>
+
                 <FrameLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -575,6 +674,102 @@
                             android:gravity="center"
                             android:paddingVertical="6dp"
                             android:text="@string/dark" />
+
+                    </LinearLayout>
+
+                </FrameLayout>
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:animateLayoutChanges="true">
+
+                    <TextView
+                        style="@style/TextSmall"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:paddingVertical="8dp"
+                        android:text="@string/font" 
+                        android:textColor="?attr/primaryColor"/>
+
+                    <TextView
+                        android:id="@+id/fontText"
+                        style="@style/TextSmallBold"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="end|bottom"
+                        android:layout_marginEnd="4dp"
+                        android:padding="8dp"
+                        android:text="@string/default_font" />
+
+                                        <LinearLayout
+                        android:id="@+id/fontSelectLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:animateLayoutChanges="true"
+                        android:background="@drawable/rounded_primary_gradient"
+                        android:elevation="8dp"
+                        android:orientation="horizontal"
+                        android:outlineAmbientShadowColor="@color/colorPrimaryDark"
+                        android:outlineSpotShadowColor="@color/colorPrimaryDark"
+                        android:paddingHorizontal="12dp"
+                        android:paddingVertical="2dp"
+                        android:visibility="gone">
+
+                        <Space
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1" />
+
+                        <TextView
+                            android:id="@+id/fontDefault"
+                            style="@style/TextSmallBold"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="24dp"
+                            android:gravity="center"
+                            android:paddingVertical="6dp"
+                            android:text="@string/default_font" />
+
+                        <TextView
+                            android:id="@+id/fontInter"
+                            style="@style/TextSmallBold"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="24dp"
+                            android:gravity="center"
+                            android:paddingVertical="6dp"
+                            android:text="@string/inter" />
+
+                        <TextView
+                            android:id="@+id/fontUbuntu"
+                            style="@style/TextSmallBold"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="24dp"
+                            android:gravity="center"
+                            android:paddingVertical="6dp"
+                            android:text="@string/ubuntu" />
+                        
+                        <TextView
+                            android:id="@+id/fontEBGaramond"
+                            style="@style/TextSmallBold"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:paddingVertical="6dp"
+                            android:text="@string/eb_garamond" />
+                        
+                        <TextView
+                            android:id="@+id/fontCrimsonPro"
+                            style="@style/TextSmallBold"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:paddingVertical="6dp"
+                            android:text="@string/crimson_pro" />
 
                     </LinearLayout>
 
