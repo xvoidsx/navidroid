@@ -1,6 +1,8 @@
 package app.navidroid.ui
 
 import android.app.WallpaperManager
+import android.graphics.BitmapFactory
+import android.graphics.drawable.BitmapDrawable
 import android.app.admin.DevicePolicyManager
 import java.util.Calendar
 import androidx.core.content.ContextCompat
@@ -299,9 +301,24 @@ class HomeFragment : Fragment(), View.OnClickListener, View.OnLongClickListener 
     // OS crop it: portrait art stays whole in landscape, pillarboxed on
     // neonBase. Live wallpapers return a null drawable, so the layer hides
     // and the system rendering shows through exactly as before.
+    // The read has a fallback chain: getDrawable() comes back empty on
+    // some devices, so try the cached peek, then the wallpaper file itself.
     private fun populateWallpaper() {
         try {
-            val drawable = WallpaperManager.getInstance(requireContext()).drawable
+            val wm = WallpaperManager.getInstance(requireContext())
+            var drawable = wm.drawable ?: wm.peekDrawable()
+            if (drawable == null) {
+                try {
+                    val pfd = wm.getWallpaperFile(WallpaperManager.FLAG_SYSTEM)
+                    if (pfd != null) {
+                        val bmp = BitmapFactory.decodeFileDescriptor(pfd.fileDescriptor)
+                        if (bmp != null) drawable = BitmapDrawable(resources, bmp)
+                        pfd.close()
+                    }
+                } catch (_: Exception) {
+                    // Restricted on some devices; fall through to GONE.
+                }
+            }
             if (drawable != null) {
                 binding.wallpaperView.setImageDrawable(drawable)
                 binding.wallpaperView.visibility = View.VISIBLE
