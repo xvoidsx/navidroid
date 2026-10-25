@@ -187,9 +187,10 @@ class Prefs(context: Context) {
         get() = prefs.getBoolean(CALENDAR_PERMISSION_REQUESTED, false)
         set(value) = prefs.edit { putBoolean(CALENDAR_PERMISSION_REQUESTED, value).apply() }
 
-    // Landscape on/off toggle; default on (rotates, as before the toggle).
+    // Landscape on/off toggle; default off, so a sideways phone never
+    // surprises anyone — rotation is opt-in from Settings.
     var allowLandscape: Boolean
-        get() = prefs.getBoolean(ALLOW_LANDSCAPE, true)
+        get() = prefs.getBoolean(ALLOW_LANDSCAPE, false)
         set(value) = prefs.edit { putBoolean(ALLOW_LANDSCAPE, value).apply() }
 
     var proMessageShown: Boolean
