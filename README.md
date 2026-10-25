@@ -42,4 +42,4 @@ Grab the APK from [Releases](https://github.com/xvoidsx/navidroid/releases) and 
 
 ## Inspiration
 
-**navidroid** is a hard fork of [Slauncher](https://github.com/s4nj1th/Slauncher), which is itself a fork of the great [Olauncher](https://github.com/tanujnotes/Olauncher). Upstream is cherry-picks now, not merges — navidroid goes its own way.
+**navidroid** is a hard fork of [Slauncher](https://github.com/s4nj1th/Slauncher), which is itself a fork of the great [Olauncher](https://github.com/tanujnotes/Olauncher).
