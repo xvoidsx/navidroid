@@ -1,9 +1,6 @@
 package app.navidroid.ui
 
 import android.app.admin.DevicePolicyManager
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
-import android.net.Uri
 import androidx.core.content.ContextCompat
 import androidx.activity.result.contract.ActivityResultContracts
 import android.content.pm.PackageManager
@@ -63,10 +60,6 @@ class SettingsFragment : Fragment(), View.OnClickListener, View.OnLongClickListe
     private var _binding: FragmentSettingsBinding? = null
     private val binding get() = _binding!!
 
-    private val wallpaperPicker = registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
-        if (uri != null) saveCustomWallpaper(uri)
-    }
-
     private val calendarPermission = registerForActivityResult(ActivityResultContracts.RequestPermission()) { granted ->
         if (granted) {
             prefs.calendarLine = true
@@ -76,6 +69,12 @@ class SettingsFragment : Fragment(), View.OnClickListener, View.OnLongClickListe
             // where to grant it instead of leaving the row silently dead.
             requireContext().showToast(getString(R.string.calendar_permission_needed))
         }
+    }
+
+    // Refreshes the wallpaper row on return from the picker trampoline.
+    override fun onResume() {
+        super.onResume()
+        populateWallpaperValue()
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
@@ -357,37 +356,15 @@ class SettingsFragment : Fragment(), View.OnClickListener, View.OnLongClickListe
             .setTitle(R.string.wallpaper)
             .setItems(items) { _, which ->
                 if (which == 0) {
-                    wallpaperPicker.launch("image/*")
+                    // Via the trampoline: MainActivity is singleTask and
+                    // can never receive the picker's result itself.
+                    startActivity(Intent(requireContext(), WallpaperPickerActivity::class.java))
                 } else {
                     customWallpaperFile(requireContext()).delete()
                     populateWallpaperValue()
                 }
             }
             .show()
-    }
-
-    // Copies the picked image into private storage (downsampled so a big
-    // photo can't OOM the home screen); the home fragment draws it fitted.
-    // The bytes are copied now, so no persistable Uri permission is needed.
-    private fun saveCustomWallpaper(uri: Uri) {
-        try {
-            val ctx = requireContext()
-            val bounds = BitmapFactory.Options().apply { inJustDecodeBounds = true }
-            ctx.contentResolver.openInputStream(uri)?.use { BitmapFactory.decodeStream(it, null, bounds) }
-            var sample = 1
-            while (maxOf(bounds.outWidth, bounds.outHeight) / sample > 2048) sample *= 2
-            val opts = BitmapFactory.Options().apply { inSampleSize = sample }
-            val bmp = ctx.contentResolver.openInputStream(uri)?.use { BitmapFactory.decodeStream(it, null, opts) }
-            if (bmp == null) {
-                ctx.showToast(getString(R.string.wallpaper_failed))
-                return
-            }
-            customWallpaperFile(ctx).outputStream().use { bmp.compress(Bitmap.CompressFormat.JPEG, 90, it) }
-            populateWallpaperValue()
-            ctx.showToast(getString(R.string.wallpaper_set))
-        } catch (e: Exception) {
-            requireContext().showToast(getString(R.string.wallpaper_failed))
-        }
     }
 
     private fun showMediaChooserDialog() {

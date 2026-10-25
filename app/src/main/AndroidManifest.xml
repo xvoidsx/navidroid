@@ -46,6 +46,14 @@
             </intent-filter>
         </activity>
 
+        <!-- Standard launch mode on purpose: hosts the wallpaper picker,
+             whose result singleTask MainActivity can never receive. -->
+        <activity
+            android:name=".ui.WallpaperPickerActivity"
+            android:excludeFromRecents="true"
+            android:exported="false"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+
         <activity
             android:name=".helper.FakeHomeActivity"
             android:enabled="false"

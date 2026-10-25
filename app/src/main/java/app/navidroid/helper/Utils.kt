@@ -512,3 +512,22 @@ const val CUSTOM_WALLPAPER_FILE = "navidroid_wallpaper.jpg"
 
 fun customWallpaperFile(context: Context): File =
     File(context.filesDir, CUSTOM_WALLPAPER_FILE)
+
+// Copies a picked image into private storage (downsampled so a big photo
+// can't OOM the home screen); the home fragment draws it fitted. The bytes
+// are copied now, so no persistable Uri permission is needed.
+fun saveCustomWallpaper(context: Context, uri: Uri): Boolean {
+    return try {
+        val bounds = BitmapFactory.Options().apply { inJustDecodeBounds = true }
+        context.contentResolver.openInputStream(uri)?.use { BitmapFactory.decodeStream(it, null, bounds) }
+        var sample = 1
+        while (maxOf(bounds.outWidth, bounds.outHeight) / sample > 2048) sample *= 2
+        val opts = BitmapFactory.Options().apply { inSampleSize = sample }
+        val bmp = context.contentResolver.openInputStream(uri)?.use { BitmapFactory.decodeStream(it, null, opts) }
+            ?: return false
+        customWallpaperFile(context).outputStream().use { bmp.compress(Bitmap.CompressFormat.JPEG, 90, it) }
+        true
+    } catch (e: Exception) {
+        false
+    }
+}
