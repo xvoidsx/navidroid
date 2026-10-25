@@ -1,5 +1,6 @@
 package app.navidroid.ui
 
+import android.app.WallpaperManager
 import android.app.admin.DevicePolicyManager
 import java.util.Calendar
 import androidx.core.content.ContextCompat
@@ -96,6 +97,7 @@ class HomeFragment : Fragment(), View.OnClickListener, View.OnLongClickListener 
         super.onResume()
         populateHomeScreen(false)
         populateCalendarLine()
+        populateWallpaper()
         viewModel.isNavidroidDefault()
         if (prefs.showStatusBar) showStatusBar()
         else hideStatusBar()
@@ -292,6 +294,24 @@ class HomeFragment : Fragment(), View.OnClickListener, View.OnLongClickListener 
         binding.tvScreenTime.setPadding(10.dpToPx())
     }
 
+
+    // Draws the system wallpaper fitted (fitCenter) instead of letting the
+    // OS crop it: portrait art stays whole in landscape, pillarboxed on
+    // neonBase. Live wallpapers return a null drawable, so the layer hides
+    // and the system rendering shows through exactly as before.
+    private fun populateWallpaper() {
+        try {
+            val drawable = WallpaperManager.getInstance(requireContext()).drawable
+            if (drawable != null) {
+                binding.wallpaperView.setImageDrawable(drawable)
+                binding.wallpaperView.visibility = View.VISIBLE
+            } else {
+                binding.wallpaperView.visibility = View.GONE
+            }
+        } catch (e: Exception) {
+            binding.wallpaperView.visibility = View.GONE
+        }
+    }
 
     private fun populateCalendarLine() {
         val line = binding.tvCalendarLine

@@ -646,7 +646,15 @@ class SettingsFragment : Fragment(), View.OnClickListener, View.OnLongClickListe
         ) {
             prefs.calendarLine = true
             populateCalendarOnOff()
+        } else if (prefs.calendarPermissionRequested &&
+            !shouldShowRequestPermissionRationale(Manifest.permission.READ_CALENDAR)
+        ) {
+            // Denied for good: Android won't show the dialog again, so take
+            // him straight to the app's system page, where Calendar is now
+            // listed (a request has happened by this point).
+            openAppInfo(requireContext(), Process.myUserHandle(), BuildConfig.APPLICATION_ID)
         } else {
+            prefs.calendarPermissionRequested = true
             calendarPermission.launch(Manifest.permission.READ_CALENDAR)
         }
     }

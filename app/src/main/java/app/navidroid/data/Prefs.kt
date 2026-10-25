@@ -38,6 +38,7 @@ class Prefs(context: Context) {
     private val FONT_SELECTION = "FONT_SELECTION"
     private val CUSTOM_FONT_PATH = "CUSTOM_FONT_PATH"
     private val CALENDAR_LINE = "CALENDAR_LINE"
+    private val CALENDAR_PERMISSION_REQUESTED = "CALENDAR_PERMISSION_REQUESTED"
     private val PRO_MESSAGE_SHOWN = "PRO_MESSAGE_SHOWN"
     private val HIDE_SET_DEFAULT_LAUNCHER = "HIDE_SET_DEFAULT_LAUNCHER"
     private val SCREEN_TIME_LAST_UPDATED = "SCREEN_TIME_LAST_UPDATED"
@@ -177,6 +178,13 @@ class Prefs(context: Context) {
     var calendarLine: Boolean
         get() = prefs.getBoolean(CALENDAR_LINE, false)
         set(value) = prefs.edit { putBoolean(CALENDAR_LINE, value).apply() }
+
+    // True once the calendar permission has been requested at least once.
+    // Needed to tell "never asked" apart from "denied for good": only in the
+    // second case should the row jump straight to the system app page.
+    var calendarPermissionRequested: Boolean
+        get() = prefs.getBoolean(CALENDAR_PERMISSION_REQUESTED, false)
+        set(value) = prefs.edit { putBoolean(CALENDAR_PERMISSION_REQUESTED, value).apply() }
 
     var proMessageShown: Boolean
         get() = prefs.getBoolean(PRO_MESSAGE_SHOWN, false)

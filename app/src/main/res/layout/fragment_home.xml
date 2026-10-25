@@ -8,6 +8,20 @@
     android:orientation="vertical"
     tools:context=".ui.HomeFragment">
 
+        <!-- navidroid draws the system wallpaper itself, fitted (fitCenter),
+             so the full art shows in portrait AND landscape instead of the
+             OS cropping portrait art to a landscape band. The neonBase
+             background fills the pillarbox/letterbox bars. Falls back to
+             GONE (plain system wallpaper) for live wallpapers and errors. -->
+        <ImageView
+            android:id="@+id/wallpaperView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/neonBase"
+            android:scaleType="fitCenter"
+            android:visibility="gone"
+            android:contentDescription="@null" />
+
         <FrameLayout
         android:id="@+id/lock"
         android:layout_width="match_parent"
