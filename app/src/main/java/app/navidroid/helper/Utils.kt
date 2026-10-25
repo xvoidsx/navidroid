@@ -43,6 +43,7 @@ import app.navidroid.data.Prefs
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.json.JSONObject
+import java.io.File
 import java.io.InputStream
 import java.net.HttpURLConnection
 import java.net.URL
@@ -503,3 +504,11 @@ fun Context.rateApp() {
     intent.addFlags(flags)
     startActivity(intent)
 }
+// In-launcher wallpaper: an image picked inside navidroid, drawn fitted
+// by the launcher itself, so nobody has to go through the system
+// wallpaper picker. Lives in private storage; the launcher draws it in
+// place of the system wallpaper whenever it exists.
+const val CUSTOM_WALLPAPER_FILE = "navidroid_wallpaper.jpg"
+
+fun customWallpaperFile(context: Context): File =
+    File(context.filesDir, CUSTOM_WALLPAPER_FILE)

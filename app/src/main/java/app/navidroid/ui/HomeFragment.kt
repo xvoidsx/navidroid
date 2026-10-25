@@ -41,6 +41,7 @@ import app.navidroid.data.Prefs
 import app.navidroid.databinding.FragmentHomeBinding
 import app.navidroid.ui.HomeMediaControllerFragment
 import app.navidroid.helper.appUsagePermissionGranted
+import app.navidroid.helper.customWallpaperFile
 import app.navidroid.helper.dpToPx
 import app.navidroid.helper.expandNotificationDrawer
 import app.navidroid.helper.getChangedAppTheme
@@ -305,6 +306,18 @@ class HomeFragment : Fragment(), View.OnClickListener, View.OnLongClickListener 
     // some devices, so try the cached peek, then the wallpaper file itself.
     private fun populateWallpaper() {
         try {
+            // An image picked inside navidroid wins over the system one:
+            // it was chosen to be seen whole, and drawing it here is what
+            // keeps it out of the system's cropping entirely.
+            val custom = customWallpaperFile(requireContext())
+            if (custom.exists()) {
+                val bmp = BitmapFactory.decodeFile(custom.absolutePath)
+                if (bmp != null) {
+                    binding.wallpaperView.setImageDrawable(BitmapDrawable(resources, bmp))
+                    binding.wallpaperView.visibility = View.VISIBLE
+                    return
+                }
+            }
             val wm = WallpaperManager.getInstance(requireContext())
             var drawable = wm.drawable ?: wm.peekDrawable()
             if (drawable == null) {

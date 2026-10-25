@@ -1,6 +1,9 @@
 package app.navidroid.ui
 
 import android.app.admin.DevicePolicyManager
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.net.Uri
 import androidx.core.content.ContextCompat
 import androidx.activity.result.contract.ActivityResultContracts
 import android.content.pm.PackageManager
@@ -37,6 +40,7 @@ import android.content.IntentFilter
 import android.content.DialogInterface
 import app.navidroid.helper.animateAlpha
 import app.navidroid.helper.appUsagePermissionGranted
+import app.navidroid.helper.customWallpaperFile
 import app.navidroid.helper.getColorFromAttr
 import app.navidroid.helper.isAccessServiceEnabled
 import app.navidroid.helper.isDarkThemeOn
@@ -58,6 +62,10 @@ class SettingsFragment : Fragment(), View.OnClickListener, View.OnLongClickListe
 
     private var _binding: FragmentSettingsBinding? = null
     private val binding get() = _binding!!
+
+    private val wallpaperPicker = registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
+        if (uri != null) saveCustomWallpaper(uri)
+    }
 
     private val calendarPermission = registerForActivityResult(ActivityResultContracts.RequestPermission()) { granted ->
         if (granted) {
@@ -117,6 +125,8 @@ class SettingsFragment : Fragment(), View.OnClickListener, View.OnLongClickListe
 
         val enabled = mediaPrefs.getBoolean("enabled", true)
         binding.mediaWidgetEnabledText?.text = if (enabled) getString(R.string.on) else getString(R.string.off)
+
+        populateWallpaperValue()
         binding.mediaWidgetEnabledText?.setOnClickListener {
             val newVal = !mediaPrefs.getBoolean("enabled", true)
             mediaPrefs.edit().putBoolean("enabled", newVal).apply()
@@ -260,6 +270,9 @@ class SettingsFragment : Fragment(), View.OnClickListener, View.OnLongClickListe
 
         // choose media row opens chooser
         binding.chooseMediaRow?.setOnClickListener { showMediaChooserDialog() }
+
+        // wallpaper row opens the picker dialog
+        binding.wallpaperRow?.setOnClickListener { showWallpaperDialog() }
         binding.swipeDownAction.setOnClickListener(this)
         binding.search.setOnClickListener(this)
         binding.notifications.setOnClickListener(this)
@@ -326,6 +339,54 @@ class SettingsFragment : Fragment(), View.OnClickListener, View.OnLongClickListe
         }
         viewModel.updateSwipeApps.observe(viewLifecycleOwner) {
             populateSwipeApps()
+        }
+    }
+
+    private fun populateWallpaperValue() {
+        val custom = customWallpaperFile(requireContext()).exists()
+        binding.wallpaperValue?.text =
+            getString(if (custom) R.string.wallpaper_custom else R.string.wallpaper_system)
+    }
+
+    private fun showWallpaperDialog() {
+        val items = arrayOf(
+            getString(R.string.wallpaper_choose_image),
+            getString(R.string.wallpaper_use_system)
+        )
+        AlertDialog.Builder(requireContext())
+            .setTitle(R.string.wallpaper)
+            .setItems(items) { _, which ->
+                if (which == 0) {
+                    wallpaperPicker.launch("image/*")
+                } else {
+                    customWallpaperFile(requireContext()).delete()
+                    populateWallpaperValue()
+                }
+            }
+            .show()
+    }
+
+    // Copies the picked image into private storage (downsampled so a big
+    // photo can't OOM the home screen); the home fragment draws it fitted.
+    // The bytes are copied now, so no persistable Uri permission is needed.
+    private fun saveCustomWallpaper(uri: Uri) {
+        try {
+            val ctx = requireContext()
+            val bounds = BitmapFactory.Options().apply { inJustDecodeBounds = true }
+            ctx.contentResolver.openInputStream(uri)?.use { BitmapFactory.decodeStream(it, null, bounds) }
+            var sample = 1
+            while (maxOf(bounds.outWidth, bounds.outHeight) / sample > 2048) sample *= 2
+            val opts = BitmapFactory.Options().apply { inSampleSize = sample }
+            val bmp = ctx.contentResolver.openInputStream(uri)?.use { BitmapFactory.decodeStream(it, null, opts) }
+            if (bmp == null) {
+                ctx.showToast(getString(R.string.wallpaper_failed))
+                return
+            }
+            customWallpaperFile(ctx).outputStream().use { bmp.compress(Bitmap.CompressFormat.JPEG, 90, it) }
+            populateWallpaperValue()
+            ctx.showToast(getString(R.string.wallpaper_set))
+        } catch (e: Exception) {
+            requireContext().showToast(getString(R.string.wallpaper_failed))
         }
     }
 

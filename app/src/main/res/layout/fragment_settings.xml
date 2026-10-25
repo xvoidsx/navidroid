@@ -298,6 +298,45 @@
 
                 </FrameLayout>
 
+                <!-- Wallpaper picker row: pick an image inside navidroid
+                     instead of going through the system wallpaper picker -->
+                <FrameLayout
+                    android:id="@+id/wallpaperRow"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:clickable="true"
+                    android:foreground="?attr/selectableItemBackground">
+
+                    <TextView
+                        style="@style/TextSmall"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:paddingVertical="8dp"
+                        android:text="@string/wallpaper"
+                        android:textColor="?attr/primaryColor" />
+
+                    <TextView
+                        android:id="@+id/wallpaperValue"
+                        style="@style/TextSmallBold"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="end|bottom"
+                        android:layout_marginEnd="40dp"
+                        android:padding="8dp"
+                        android:text="@string/wallpaper_system" />
+
+                    <ImageView
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_gravity="end|center_vertical"
+                        android:layout_marginEnd="8dp"
+                        android:src="@drawable/ic_chevron_right"
+                        android:tint="?attr/primaryColor" />
+
+                </FrameLayout>
+
                 <FrameLayout
                     android:id="@+id/enableListenerRow"
                     android:layout_width="match_parent"

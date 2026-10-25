@@ -173,4 +173,11 @@
     <string name="choose_font">Choose font (TTF)</string>
     <string name="font_applied">Font applied</string>
     <string name="font_preview_text">The quick brown fox jumps over the lazy dog</string>
+    <string name="wallpaper">Wallpaper</string>
+    <string name="wallpaper_system">System</string>
+    <string name="wallpaper_custom">Custom</string>
+    <string name="wallpaper_choose_image">Choose image…</string>
+    <string name="wallpaper_use_system">System wallpaper</string>
+    <string name="wallpaper_set">Wallpaper set</string>
+    <string name="wallpaper_failed">Could not set wallpaper</string>
 </resources>
