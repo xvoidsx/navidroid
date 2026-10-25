@@ -1,32 +1,43 @@
 <div align="center">
     <h1>navidroid</h1>
-    <p>Minimal and distractionless launcher for Android.</p>
+    <p>Minimal and distractionless launcher for Android, by xvoidsx.</p>
     <br />
 </div>
 
-**navidroid** is a minimal, distractionless, and tiny launcher for Android devices. It aims to follow the same conventions as [naviOS](https://github.com/xvoidsx/naviOS), providing you with the same clean, beautiful experience on your phone or tablet as you do on your desktop.
+**navidroid** is a minimal, distractionless launcher for Android — the phone companion to [navi](https://github.com/xvoidsx/navi), carrying the same clean-first, character-second spirit. Your wallpaper, your clock, your apps: nothing else in the way.
 
 ## Screenshots
 
 <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; margin-top: 1rem;" align="center">
-    <img width="570" alt="image" src="https://github.com/user-attachments/assets/c27b5617-f06c-4c57-9cd6-0d4a4bb396c2" />
+    <img width="360" alt="navidroid home in portrait" src="screenshots/home-portrait.png" />
 </div>
 
 ## Features
 
-- **Minimal, distractionless UI**. Just your wallpaper, clock, and text list of apps.
-- **Privacy-respecting**. There is no telemetry or ads, and never will be.
-- **Custom font support**. Choose from a nice selection of pre-installed fonts.
-- **Media widget included**. Control media using a helpful widget.
+- **Minimal, distractionless home**. Clock, date, a line for today's calendar events, and a text list of apps. That's the whole home screen.
+- **Calendar line**. The current event shows under the date — ongoing events count as current, not just ones starting in the future.
+- **In-launcher wallpaper picker**. Choose any image from inside navidroid; it draws the art fitted, whole, in portrait and landscape — no trip to the system wallpaper picker.
+- **Landscape, on your terms**. Portrait-first by default, so a sideways phone never surprises you; flip Allow landscape on in Settings when you want rotation.
+- **Up to 8 pinned home apps**. The olauncher-era slots, restored.
+- **nightshadeNeon soul**. Neon pink, green, and cyan on near-black, a neon visualizer that dances while music plays, and a custom `>_` icon.
+- **Fonts**. Noto Sans and JetBrains Mono alongside the classics.
+- **Media widget included**. Control media from home, with no extra permissions.
+- **Privacy-respecting**. No telemetry, no ads, and never will be.
+
+## Install
+
+Grab the APK from [Releases](https://github.com/xvoidsx/navidroid/releases) and install it. Preview builds update over each other, so installing the next one is painless.
+
+## Roadmap
+
+- **Lain bar** — the agent bar, once the agent story behind it is decided.
+- Quick capture, voice, swipe-to-Lain.
+- F-Droid.
 
 ## License
 
 - This project is licensed under the GNU General Public License v3 (GPLv3). See the [LICENSE](./LICENSE) file for details.
 
-## Inspiration and Roadmap
+## Inspiration
 
-**navidroid** is a fork of [Slauncher](https://github.com/s4nj1th/Slauncher), which is itself a fork of the great [Olauncher](https://github.com/tanujnotes/Olauncher). 
-
-We are adding in some new QoL features, such as support for landscape mode (two-column app list as well, when in landscape), support for creating app pairs with split-views, bringing in support for more fonts (as well as allowing the user to add their own), and some other nice-to-haves. 
-
-We will update this repo with an actual roadmap soon enough!
+**navidroid** is a hard fork of [Slauncher](https://github.com/s4nj1th/Slauncher), which is itself a fork of the great [Olauncher](https://github.com/tanujnotes/Olauncher). Upstream is cherry-picks now, not merges — navidroid goes its own way.
