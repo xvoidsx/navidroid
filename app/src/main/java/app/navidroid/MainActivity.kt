@@ -20,6 +20,7 @@ import androidx.navigation.findNavController
 import app.navidroid.data.Constants
 import app.navidroid.data.Prefs
 import app.navidroid.databinding.ActivityMainBinding
+import app.navidroid.helper.applyOrientation
 import app.navidroid.helper.getColorFromAttr
 import app.navidroid.helper.hasBeenDays
 import app.navidroid.helper.hasBeenHours
@@ -78,6 +79,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        applyOrientation(this)
 
         navController = this.findNavController(R.id.nav_host_fragment)
         viewModel = ViewModelProvider(this)[MainViewModel::class.java]
@@ -111,6 +113,12 @@ class MainActivity : AppCompatActivity() {
         viewModel.getAppList()
 
         window.addFlags(FLAG_LAYOUT_NO_LIMITS)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        // Applies a landscape-toggle change made in Settings.
+        applyOrientation(this)
     }
 
     override fun onStart() {

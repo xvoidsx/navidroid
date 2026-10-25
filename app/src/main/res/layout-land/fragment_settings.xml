@@ -332,6 +332,36 @@
 
                 </FrameLayout>
 
+                <!-- Landscape toggle -->
+                <FrameLayout
+                    android:id="@+id/landscapeToggleRow"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:clickable="true"
+                    android:foreground="?attr/selectableItemBackground">
+
+                    <TextView
+                        style="@style/TextSmall"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:paddingVertical="8dp"
+                        android:text="@string/allow_landscape"
+                        android:textColor="?attr/primaryColor" />
+
+                    <TextView
+                        android:id="@+id/landscapeToggleValue"
+                        style="@style/TextSmallBold"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="end|bottom"
+                        android:layout_marginEnd="8dp"
+                        android:padding="8dp"
+                        android:text="@string/on" />
+
+                </FrameLayout>
+
                 <FrameLayout
                     android:id="@+id/enableListenerRow"
                     android:layout_width="match_parent"

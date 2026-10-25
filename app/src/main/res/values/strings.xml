@@ -180,4 +180,5 @@
     <string name="wallpaper_use_system">System wallpaper</string>
     <string name="wallpaper_set">Wallpaper set</string>
     <string name="wallpaper_failed">Could not set wallpaper</string>
+    <string name="allow_landscape">Allow landscape</string>
 </resources>

@@ -39,6 +39,7 @@ class Prefs(context: Context) {
     private val CUSTOM_FONT_PATH = "CUSTOM_FONT_PATH"
     private val CALENDAR_LINE = "CALENDAR_LINE"
     private val CALENDAR_PERMISSION_REQUESTED = "CALENDAR_PERMISSION_REQUESTED"
+    private val ALLOW_LANDSCAPE = "ALLOW_LANDSCAPE"
     private val PRO_MESSAGE_SHOWN = "PRO_MESSAGE_SHOWN"
     private val HIDE_SET_DEFAULT_LAUNCHER = "HIDE_SET_DEFAULT_LAUNCHER"
     private val SCREEN_TIME_LAST_UPDATED = "SCREEN_TIME_LAST_UPDATED"
@@ -185,6 +186,11 @@ class Prefs(context: Context) {
     var calendarPermissionRequested: Boolean
         get() = prefs.getBoolean(CALENDAR_PERMISSION_REQUESTED, false)
         set(value) = prefs.edit { putBoolean(CALENDAR_PERMISSION_REQUESTED, value).apply() }
+
+    // Landscape on/off toggle; default on (rotates, as before the toggle).
+    var allowLandscape: Boolean
+        get() = prefs.getBoolean(ALLOW_LANDSCAPE, true)
+        set(value) = prefs.edit { putBoolean(ALLOW_LANDSCAPE, value).apply() }
 
     var proMessageShown: Boolean
         get() = prefs.getBoolean(PRO_MESSAGE_SHOWN, false)

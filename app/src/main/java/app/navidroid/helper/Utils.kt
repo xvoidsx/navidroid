@@ -1,12 +1,14 @@
 package app.navidroid.helper
 
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.app.SearchManager
 import android.app.WallpaperManager
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
 import android.content.Intent
+import android.content.pm.ActivityInfo
 import android.content.pm.ApplicationInfo
 import android.content.pm.LauncherApps
 import android.content.res.Configuration
@@ -530,4 +532,12 @@ fun saveCustomWallpaper(context: Context, uri: Uri): Boolean {
     } catch (e: Exception) {
         false
     }
+}
+
+// Landscape toggle: off locks the launcher to portrait, on leaves
+// orientation to the system (the behavior before the toggle existed).
+fun applyOrientation(activity: Activity) {
+    val allow = Prefs(activity).allowLandscape
+    activity.requestedOrientation = if (allow) ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED
+        else ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
 }

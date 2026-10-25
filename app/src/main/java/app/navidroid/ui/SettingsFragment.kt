@@ -36,6 +36,7 @@ import android.media.session.MediaSessionManager
 import android.content.IntentFilter
 import android.content.DialogInterface
 import app.navidroid.helper.animateAlpha
+import app.navidroid.helper.applyOrientation
 import app.navidroid.helper.appUsagePermissionGranted
 import app.navidroid.helper.customWallpaperFile
 import app.navidroid.helper.getColorFromAttr
@@ -71,10 +72,17 @@ class SettingsFragment : Fragment(), View.OnClickListener, View.OnLongClickListe
         }
     }
 
-    // Refreshes the wallpaper row on return from the picker trampoline.
+    // Refreshes the wallpaper row on return from the picker trampoline,
+    // and the landscape value on first show and every return.
     override fun onResume() {
         super.onResume()
         populateWallpaperValue()
+        populateLandscapeValue()
+    }
+
+    private fun populateLandscapeValue() {
+        binding.landscapeToggleValue?.text =
+            getString(if (prefs.allowLandscape) R.string.on else R.string.off)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
@@ -272,6 +280,13 @@ class SettingsFragment : Fragment(), View.OnClickListener, View.OnLongClickListe
 
         // wallpaper row opens the picker dialog
         binding.wallpaperRow?.setOnClickListener { showWallpaperDialog() }
+
+        // landscape row flips the orientation lock
+        binding.landscapeToggleRow?.setOnClickListener {
+            prefs.allowLandscape = !prefs.allowLandscape
+            populateLandscapeValue()
+            applyOrientation(requireActivity())
+        }
         binding.swipeDownAction.setOnClickListener(this)
         binding.search.setOnClickListener(this)
         binding.notifications.setOnClickListener(this)
