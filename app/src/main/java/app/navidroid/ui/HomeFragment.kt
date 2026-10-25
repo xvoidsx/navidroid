@@ -336,7 +336,11 @@ class HomeFragment : Fragment(), View.OnClickListener, View.OnLongClickListener 
                 .appendPath(dayStart.toString()).appendPath(dayEnd.toString()).build()
             val cursor = requireContext().contentResolver.query(
                 uri,
-                arrayOf(CalendarContract.Instances.TITLE, CalendarContract.Instances.BEGIN),
+                arrayOf(
+                    CalendarContract.Instances.TITLE,
+                    CalendarContract.Instances.BEGIN,
+                    CalendarContract.Instances.END
+                ),
                 null, null, "${CalendarContract.Instances.BEGIN} ASC"
             )
             cursor?.use {
@@ -344,7 +348,12 @@ class HomeFragment : Fragment(), View.OnClickListener, View.OnLongClickListener 
                 while (it.moveToNext()) {
                     val title = it.getString(0) ?: continue
                     val begin = it.getLong(1)
-                    if (!isMorning && begin < now) continue
+                    val end = it.getLong(2)
+                    // Afternoon/evening: show the first event that hasn't
+                    // ENDED yet, so an ongoing event (e.g. one that started
+                    // at 19:00, now 19:41) counts as current instead of
+                    // being skipped for starting in the past.
+                    if (!isMorning && end <= now) continue
                     val time = DateFormat.getTimeFormat(requireContext()).format(Date(begin))
                     line.text = "$time · $title"
                     line.visibility = View.VISIBLE
