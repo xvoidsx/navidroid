@@ -109,6 +109,13 @@ class HomeFragment : Fragment(), View.OnClickListener, View.OnLongClickListener 
         else hideStatusBar()
     }
 
+    override fun onPause() {
+        // The glimmer is a foreground flourish only — never animate a home
+        // line nobody is looking at.
+        _binding?.tvAgentLine?.let { AgentGlimmer.stop(it) }
+        super.onPause()
+    }
+
     override fun onClick(view: View) {
         when (view.id) {
             R.id.lock -> {}
@@ -430,17 +437,20 @@ class HomeFragment : Fragment(), View.OnClickListener, View.OnLongClickListener 
     }
 
     // The agent line lives under the calendar line and is always shown: a
-    // set default reads "Ask <name>", an unset one invites the pick.
+    // set default reads "Ask <name>", an unset one invites the pick. The ✨
+    // prefix and the nightshadeNeon glimmer are the line's signature — the
+    // one home line that is never plain white.
     private fun populateAgentLine() {
         val line = binding.tvAgentLine
         val pkg = prefs.defaultAgentPackage
-        line.text = if (pkg.isBlank()) {
+        line.text = "✨ " + if (pkg.isBlank()) {
             getString(R.string.choose_your_agent)
         } else {
             val name = agentForPackage(pkg)?.name ?: pkg
             getString(R.string.ask_agent, name)
         }
         line.visibility = View.VISIBLE
+        AgentGlimmer.start(line)
     }
 
     private fun openAgentLine() {
@@ -787,6 +797,7 @@ class HomeFragment : Fragment(), View.OnClickListener, View.OnLongClickListener 
     }
 
     override fun onDestroyView() {
+        _binding?.tvAgentLine?.let { AgentGlimmer.stop(it) }
         super.onDestroyView()
         _binding = null
     }
