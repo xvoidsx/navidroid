@@ -4,7 +4,7 @@
     <br />
 </div>
 
-**navidroid** is a minimal, distractionless launcher for Android — the phone companion to [navi](https://github.com/xvoidsx/navi), carrying the same clean-first, character-second spirit. Your wallpaper, your clock, your apps: nothing else in the way.
+**navidroid** is a minimal, distractionless launcher for Android — the phone companion to [navi](https://github.com/xvoidsx/navi), carrying the same clean-first, character-second spirit. Your wallpaper, your clock, your apps, your agents: nothing else in the way.
 
 Celebrate the spirit of the Wired, on your phone~
 
