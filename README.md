@@ -12,8 +12,6 @@ Celebrate the spirit of the Wired, on your phone~
 
 <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; margin-top: 1rem;" align="center">
     <img width="280" alt="navidroid home in portrait — the agent line glimmering above the calendar line" src="screenshots/home-portrait.jpg" />
-    <img width="280" alt="the Default AI Agent picker" src="screenshots/agent-picker.jpg" />
-    <img width="280" alt="settings with the Default AI Agent row" src="screenshots/settings.jpg" />
 </div>
 
 ## Features
