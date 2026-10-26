@@ -37,7 +37,7 @@ Latest preview: **v0.2.1**. Grab the APK from [the v0.2.1 release](https://githu
 - **Weather line** — sequenced after the agent line and the calendar countdown.
 - **Lain bar** — the agent bar, once the agent story behind it is decided.
 - Quick capture, voice, swipe-to-Lain.
-- F-Droid.
+- Komi Store distribution — the open store pulls straight from GitHub releases, so updates ship on our own cadence, no store queue.
 
 ## License
 

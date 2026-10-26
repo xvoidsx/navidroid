@@ -82,7 +82,8 @@ own way. GPL-3.0; the fork attribution and LICENSE stay.
 - Sequenced next: weather line, then the Lain bar — which stays **gated on
   the agent-story decision** (engine, tap action, local-first). The agent
   button does not lift that gate. Later: quick capture, voice,
-  swipe-to-Lain, F-Droid.
+  swipe-to-Lain, Komi Store distribution (replaces the earlier F-Droid
+  plan, 26 Oct — Komi pulls straight from GitHub releases).
 - The navi-site page lives at `navidroid.html` in xvoidsx/enter-the-wired
   (not a navi-site repo — none exists); its screenshots are copies of the
   ones in `screenshots/` here.
