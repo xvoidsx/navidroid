@@ -29,6 +29,7 @@ import app.navidroid.MainViewModel
 import app.navidroid.R
 import app.navidroid.data.Constants
 import app.navidroid.data.Prefs
+import app.navidroid.data.agentForPackage
 import app.navidroid.databinding.FragmentSettingsBinding
 import android.app.AlertDialog
 import android.media.session.MediaController
@@ -78,6 +79,7 @@ class SettingsFragment : Fragment(), View.OnClickListener, View.OnLongClickListe
         super.onResume()
         populateWallpaperValue()
         populateLandscapeValue()
+        populateAgentValue()
     }
 
     private fun populateLandscapeValue() {
@@ -106,6 +108,7 @@ class SettingsFragment : Fragment(), View.OnClickListener, View.OnLongClickListe
         populateKeyboardText()
         populateScreenTimeOnOff()
         populateCalendarOnOff()
+        populateAgentValue()
         populateLockSettings()
         populateAppThemeText()
         populateFontText()
@@ -159,6 +162,10 @@ class SettingsFragment : Fragment(), View.OnClickListener, View.OnLongClickListe
             R.id.screenTimeOnOff -> viewModel.showDialog.postValue(Constants.Dialog.DIGITAL_WELLBEING)
             R.id.calendarOnOff -> toggleCalendarLine()
             R.id.calendarLayout -> toggleCalendarLine()
+            R.id.agentLayout -> showAgentPicker(requireContext(), prefs.defaultAgentPackage) { pkg ->
+                prefs.defaultAgentPackage = pkg
+                populateAgentValue()
+            }
             R.id.appInfo -> openAppInfo(requireContext(), Process.myUserHandle(), BuildConfig.APPLICATION_ID)
             R.id.setLauncher -> viewModel.resetLauncherLiveData.call()
             R.id.toggleLock -> toggleLockMode()
@@ -255,6 +262,7 @@ class SettingsFragment : Fragment(), View.OnClickListener, View.OnLongClickListe
         binding.screenTimeOnOff.setOnClickListener(this)
         binding.calendarOnOff.setOnClickListener(this)
         binding.calendarLayout.setOnClickListener(this)
+        binding.agentLayout.setOnClickListener(this)
         binding.alignment.setOnClickListener(this)
         binding.alignmentLeft.setOnClickListener(this)
         binding.alignmentCenter.setOnClickListener(this)
@@ -679,6 +687,15 @@ class SettingsFragment : Fragment(), View.OnClickListener, View.OnLongClickListe
         } else binding.screenTimeLayout.visibility = View.GONE
     }
 
+
+    private fun populateAgentValue() {
+        val pkg = prefs.defaultAgentPackage
+        binding.agentValue.text = if (pkg.isBlank()) {
+            getString(R.string.agent_not_set)
+        } else {
+            agentForPackage(pkg)?.name ?: pkg
+        }
+    }
 
     private fun populateCalendarOnOff() {
         binding.calendarOnOff.text = if (prefs.calendarLine && ContextCompat.checkSelfPermission(

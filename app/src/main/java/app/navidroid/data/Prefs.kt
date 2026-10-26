@@ -93,6 +93,7 @@ class Prefs(context: Context) {
     private val CALENDAR_APP_PACKAGE = "CALENDAR_APP_PACKAGE"
     private val CALENDAR_APP_USER = "CALENDAR_APP_USER"
     private val CALENDAR_APP_CLASS_NAME = "CALENDAR_APP_CLASS_NAME"
+    private val DEFAULT_AGENT_PACKAGE = "DEFAULT_AGENT_PACKAGE"
 
     private val prefs: SharedPreferences = context.getSharedPreferences(PREFS_FILENAME, 0)
 
@@ -428,6 +429,13 @@ class Prefs(context: Context) {
     var calendarAppClassName: String?
         get() = prefs.getString(CALENDAR_APP_CLASS_NAME, "").toString()
         set(value) = prefs.edit { putString(CALENDAR_APP_CLASS_NAME, value).apply() }
+
+    // The chosen default AI agent, stored as its Play package: the
+    // homescreen agent line launches it when installed, and opens its Play
+    // listing when it isn't. Blank means no default yet.
+    var defaultAgentPackage: String
+        get() = prefs.getString(DEFAULT_AGENT_PACKAGE, "").toString()
+        set(value) = prefs.edit { putString(DEFAULT_AGENT_PACKAGE, value).apply() }
 
     fun getAppName(location: Int): String {
         return when (location) {

@@ -66,6 +66,17 @@
             android:ellipsize="end"
             android:visibility="gone"
             tools:text="10:00 · Team standup" />
+        <TextView
+            android:id="@+id/tvAgentLine"
+            style="@style/TextSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="3dp"
+            android:textSize="@dimen/date_size"
+            android:maxLines="1"
+            android:ellipsize="end"
+            android:visibility="gone"
+            tools:text="Ask Muse" />
 
     </LinearLayout>
 

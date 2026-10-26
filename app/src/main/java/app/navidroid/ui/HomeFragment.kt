@@ -13,6 +13,7 @@ import android.Manifest
 import android.content.Context
 import android.content.Intent
 import android.content.res.Configuration
+import android.net.Uri
 import android.os.BatteryManager
 import android.os.Build
 import android.os.Bundle
@@ -38,6 +39,7 @@ import app.navidroid.R
 import app.navidroid.data.AppModel
 import app.navidroid.data.Constants
 import app.navidroid.data.Prefs
+import app.navidroid.data.agentForPackage
 import app.navidroid.databinding.FragmentHomeBinding
 import app.navidroid.ui.HomeMediaControllerFragment
 import app.navidroid.helper.appUsagePermissionGranted
@@ -100,6 +102,7 @@ class HomeFragment : Fragment(), View.OnClickListener, View.OnLongClickListener 
         super.onResume()
         populateHomeScreen(false)
         populateCalendarLine()
+        populateAgentLine()
         populateWallpaper()
         viewModel.isNavidroidDefault()
         if (prefs.showStatusBar) showStatusBar()
@@ -112,6 +115,7 @@ class HomeFragment : Fragment(), View.OnClickListener, View.OnLongClickListener 
             R.id.clock -> openClockApp()
             R.id.date -> openCalendarApp()
             R.id.tvCalendarLine -> openCalendarApp()
+            R.id.tvAgentLine -> openAgentLine()
             R.id.setDefaultLauncher -> viewModel.resetLauncherLiveData.call()
             R.id.tvScreenTime -> openScreenTimeDigitalWellbeing()
 
@@ -172,6 +176,15 @@ class HomeFragment : Fragment(), View.OnClickListener, View.OnLongClickListener 
                 prefs.calendarAppPackage = ""
                 prefs.calendarAppClassName = ""
                 prefs.calendarAppUser = ""
+            }
+
+            R.id.tvAgentLine -> {
+                // Long-press quick-switches the default without a trip to
+                // Settings; the Settings row stays the real switcher.
+                showAgentPicker(requireContext(), prefs.defaultAgentPackage) { pkg ->
+                    prefs.defaultAgentPackage = pkg
+                    populateAgentLine()
+                }
             }
 
             R.id.setDefaultLauncher -> {
@@ -239,6 +252,8 @@ class HomeFragment : Fragment(), View.OnClickListener, View.OnLongClickListener 
         binding.setDefaultLauncher.setOnLongClickListener(this)
         binding.tvScreenTime.setOnClickListener(this)
         binding.tvCalendarLine.setOnClickListener(this)
+        binding.tvAgentLine.setOnClickListener(this)
+        binding.tvAgentLine.setOnLongClickListener(this)
     }
 
     private fun setHomeAlignment(horizontalGravity: Int = prefs.homeAlignment) {
@@ -385,7 +400,15 @@ class HomeFragment : Fragment(), View.OnClickListener, View.OnLongClickListener 
                     // being skipped for starting in the past.
                     if (!isMorning && end <= now) continue
                     val time = DateFormat.getTimeFormat(requireContext()).format(Date(begin))
-                    line.text = "$time · $title"
+                    // Time-until, in the same breath as the event: future
+                    // events count down to the start, ongoing ones to the
+                    // end, and an already-over morning event stays plain.
+                    val countdown = when {
+                        begin > now -> getString(R.string.calendar_in, formatCountdown(begin - now))
+                        end > now -> getString(R.string.calendar_ends_in, formatCountdown(end - now))
+                        else -> null
+                    }
+                    line.text = if (countdown != null) "$time · $title · $countdown" else "$time · $title"
                     line.visibility = View.VISIBLE
                     return
                 }
@@ -393,6 +416,57 @@ class HomeFragment : Fragment(), View.OnClickListener, View.OnLongClickListener 
             } ?: run { line.visibility = View.GONE }
         } catch (e: Exception) {
             line.visibility = View.GONE
+        }
+    }
+
+    // Compact durations in the app's own idiom ("40m", "2h 15m"), as the
+    // screen-time line already shows them.
+    private fun formatCountdown(millis: Long): String {
+        val minutes = maxOf(1L, millis / 60000)
+        if (minutes < 60) return "${minutes}m"
+        val hours = minutes / 60
+        val rem = minutes % 60
+        return if (rem == 0L) "${hours}h" else "${hours}h ${rem}m"
+    }
+
+    // The agent line lives under the calendar line and is always shown: a
+    // set default reads "Ask <name>", an unset one invites the pick.
+    private fun populateAgentLine() {
+        val line = binding.tvAgentLine
+        val pkg = prefs.defaultAgentPackage
+        line.text = if (pkg.isBlank()) {
+            getString(R.string.choose_your_agent)
+        } else {
+            val name = agentForPackage(pkg)?.name ?: pkg
+            getString(R.string.ask_agent, name)
+        }
+        line.visibility = View.VISIBLE
+    }
+
+    private fun openAgentLine() {
+        val pkg = prefs.defaultAgentPackage
+        if (pkg.isBlank()) {
+            showAgentPicker(requireContext(), pkg) { selected ->
+                prefs.defaultAgentPackage = selected
+                populateAgentLine()
+            }
+            return
+        }
+        val name = agentForPackage(pkg)?.name ?: pkg
+        if (requireContext().packageManager.getLaunchIntentForPackage(pkg) != null) {
+            launchApp(name, pkg, null, "")
+        } else {
+            openAgentStore(pkg)
+        }
+    }
+
+    // Installed → launch; not installed → its Play listing. The web URL is
+    // the fallback for devices without a Play store app.
+    private fun openAgentStore(packageName: String) {
+        try {
+            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=$packageName")))
+        } catch (_: Exception) {
+            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=$packageName")))
         }
     }
 

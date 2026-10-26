@@ -170,6 +170,13 @@
     <string name="jetbrains_mono">JetBrains Mono</string>
     <string name="calendar">Calendar</string>
     <string name="calendar_permission_needed">Calendar permission needed — allow it in Settings → Apps → navidroid → Permissions</string>
+    <string name="calendar_in">in %1$s</string>
+    <string name="calendar_ends_in">ends in %1$s</string>
+    <string name="default_ai_agent">Default AI Agent</string>
+    <string name="agent_not_set">Not set</string>
+    <string name="agent_none">None</string>
+    <string name="choose_your_agent">Choose your agent</string>
+    <string name="ask_agent">Ask %1$s</string>
     <string name="choose_font">Choose font (TTF)</string>
     <string name="font_applied">Font applied</string>
     <string name="font_preview_text">The quick brown fox jumps over the lazy dog</string>
