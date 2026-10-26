@@ -35,7 +35,9 @@ jobs:
           tag_name: v${{ inputs.version }}
           name: navidroid ${{ inputs.version }}
           body: |
-            Second public preview of navidroid. New: a Default AI Agent — pick from a curated list in Settings, then a line under the calendar on home reads "Ask <name>" and opens it; if the agent isn't installed, it opens its Play listing instead. Long-press the line to switch agents without opening Settings. The calendar line now counts down too: "in 40m" for what's coming, "ends in 1h 5m" for what's on.
+            v0.2.1 — the agent line now glimmers. A slow nightshadeNeon wave (pink → green → cyan) rolls across the line with a ✨, so it stands apart from the white calendar line instead of blending in.
+
+            Everything from v0.2.0 is in here too: the Default AI Agent picker in Settings, "Ask <name>" on home, launch-or-Play, long-press quick-switch, and the calendar countdown.
 
             Install the APK below; preview builds update over each other.
           files: navidroid-${{ inputs.version }}.apk
