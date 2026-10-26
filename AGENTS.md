@@ -10,44 +10,25 @@ companion to navi. A hard fork of s4nj1th/Slauncher (itself a fork of
 Olauncher). **Upstream is cherry-picks now, not merges** — navidroid goes its
 own way. GPL-3.0; the fork attribution and LICENSE stay.
 
-## Build and release — CI only
+## Build and release
 
-- **Gradle does NOT build locally in this sandbox.** The daemon protocol
-  fails the same way every time (client dispatch dies with
-  `MessageIOException` after the daemon idles). Never trust a sandbox
-  native-build failure as a code failure; never claim a build works without
-  the CI run.
-- `.github/workflows/build-apk.yml` — push-triggered on `app/**`, uploads the
-  `navidroid-debug-apk` artifact. This is the compile check.
-- `.github/workflows/release.yml` — `workflow_dispatch` with a `version`
-  input: builds the debug APK and cuts a prerelease with
-  `navidroid-<version>.apk`. The release body lives hardcoded in that file;
-  update it before dispatching, not after.
+- CI is the source of truth for builds: `.github/workflows/build-apk.yml`
+  (push-triggered on `app/**`) is the compile check, and
+  `.github/workflows/release.yml` (`workflow_dispatch` with a `version`
+  input) cuts the prerelease and its `navidroid-<version>.apk`. The release
+  body lives in that file; update it as part of the release.
 - Version bumps touch `app/build.gradle` only: `versionCode` +1 and
   `versionName` per release (v0.2.1 = 106).
 - **Signing:** `app/debug.keystore` is a committed shared debug keystore with
   a `signingConfigs.debug` block, so preview builds update over each other.
   A real release signing key is still open for 1.0.
-- **Dispatch quirk:** `gh-api` POSTs to the dispatch endpoint error with
-  “provider response was not valid JSON” even on success — GitHub answers
-  dispatches with 204 No Content, which the helper cannot parse. Check the
-  runs list to confirm, and **never double-dispatch** on that error.
-- **Workflow files need the Contents API.** The Git Data API (gh-push-mika)
-  returns 422 on `.github/workflows/` even with workflow scope. Contents API
-  PUT with the current blob sha works.
 
-## Pushing
+## Contributing
 
-- Push with `gh-push-mika`, explicit every time: `--repo xvoidsx/navidroid
-  --branch main --root <tree> --message "<msg>" <repo-relative paths...>`.
-  It defaults `--repo` to xvoidsx/navi and `--branch` to main — omitting
-  either has shipped work to the wrong repo before.
-- Before every push, fetch the remote file(s) and diff against local. Local
-  trees go stale in either direction; a file-level diff is not enough after
-  days of drift — do a fresh full-tree diff when in doubt.
-- After every push, re-fetch remote and grep the change to verify live.
-- Deleting remote files: Contents API DELETE with the blob sha from GET,
-  one commit per file.
+- Contributions welcome via pull request against `main`.
+- Keep your checkout fresh before opening one — diff against remote `main`
+  first; this tree moves fast.
+- Releases are cut by the maintainers through the Actions workflows above.
 
 ## Where things live
 
