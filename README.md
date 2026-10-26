@@ -32,6 +32,8 @@ Celebrate the spirit of the Wired, on your phone~
 
 Latest preview: **v0.2.1**. Grab the APK from [the v0.2.1 release](https://github.com/xvoidsx/navidroid/releases/tag/v0.2.1) — or browse all [Releases](https://github.com/xvoidsx/navidroid/releases) — and install it. Preview builds update over each other, so installing the next one is painless.
 
+[You can also install from the Komi Store!](githubstore://repo/xvoidsx/navidroid) - this will auto-update for you.
+
 ## Roadmap
 
 - **Weather line** — sequenced after the agent line and the calendar countdown.
