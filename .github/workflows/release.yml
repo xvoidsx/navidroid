@@ -35,9 +35,9 @@ jobs:
           tag_name: v${{ inputs.version }}
           name: navidroid ${{ inputs.version }}
           body: |
-            v0.2.1 — the agent line now glimmers. A slow nightshadeNeon wave (pink → green → cyan) rolls across the line with a ✨, so it stands apart from the white calendar line instead of blending in.
+            v0.2.2 — Yahoo Scout joins the Default AI Agent list. Pick it in Settings and the home line reads "Ask Yahoo Scout", launching the app when it's installed and opening its Play listing when it isn't. (Scout's AI features are US-only, per Yahoo.)
 
-            Everything from v0.2.0 is in here too: the Default AI Agent picker in Settings, "Ask <name>" on home, launch-or-Play, long-press quick-switch, and the calendar countdown.
+            Everything from v0.2.1 is in here too: the glimmering agent line, the Default AI Agent picker in Settings, launch-or-Play, long-press quick-switch, and the calendar countdown.
 
             Install the APK below; preview builds update over each other.
           files: navidroid-${{ inputs.version }}.apk

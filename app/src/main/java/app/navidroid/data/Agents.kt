@@ -41,7 +41,10 @@ val CURATED_AGENTS = listOf(
     // is browser-only now). Kept with an empty package so the picker hides
     // it until a web fallback lands — never ship a dead Play URL for it.
     Agent("HuggingChat", ""),
-    Agent("Poe", "com.poe.android")
+    Agent("Poe", "com.poe.android"),
+    // Yahoo Search was renamed "Yahoo Scout" (same package); the AI
+    // features are US-only per the Play listing.
+    Agent("Yahoo Scout", "com.yahoo.mobile.client.android.search")
 )
 
 fun agentForPackage(packageName: String): Agent? {

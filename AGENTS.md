@@ -74,11 +74,11 @@ own way. GPL-3.0; the fork attribution and LICENSE stay.
 - **Screenshots uploaded via chat are JPEG bytes even when named .png.**
   Name image files by their actual format.
 
-## Current state (26 Oct 2026)
+## Current state (9 Nov 2026)
 
-- v0.2.1 (106) is the latest public preview: v0.2.0's Default AI Agent
-  (19 live curated agents, launch-or-Play, long-press quick-switch) +
-  calendar countdown + the agent-line glimmer.
+- v0.2.2 (107) is the latest public preview: v0.2.0's Default AI Agent
+  (20 live curated agents, launch-or-Play, long-press quick-switch) +
+  Yahoo Scout + calendar countdown + the agent-line glimmer.
 - Sequenced next: weather line, then the Lain bar — which stays **gated on
   the agent-story decision** (engine, tap action, local-first). The agent
   button does not lift that gate. Later: quick capture, voice,
