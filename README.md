@@ -18,7 +18,7 @@ Celebrate the spirit of the Wired, on your phone~
 
 - **Minimal, distractionless home**. Clock, date, a line for today's calendar events, and a text list of apps. That's the whole home screen.
 - **Calendar line**. The current event shows under the date — ongoing events count as current, not just ones starting in the future — and it counts down: “in 40m” for what's coming, “ends in…” for what's on.
-- **Default AI Agent**. Pick from a curated list of 19 AI apps in Settings, and a line under the calendar reads “Ask \<name\>” and opens it — or its Play listing if it isn't installed. Long-press the line to switch agents without opening Settings.
+- **Default AI Agent**. Pick from a curated list of 20 AI apps in Settings, and a line under the calendar reads “Ask \<name\>” and opens it — or its Play listing if it isn't installed. Long-press the line to switch agents without opening Settings.
 - **Agent line glimmer**. The agent line shimmers in nightshadeNeon — a slow pink → green → cyan wave with a ✨ — so it never reads as just another white line.
 - **In-launcher wallpaper picker**. Choose any image from inside navidroid; it draws the art fitted, whole, in portrait and landscape — no trip to the system wallpaper picker.
 - **Landscape, on your terms**. Portrait-first by default, so a sideways phone never surprises you; flip Allow landscape on in Settings when you want rotation.
